@@ -13,10 +13,7 @@ export function SupabaseProvider({ children }) {
 
 const fromSupabase = async (query) => {
     const { data, error } = await query;
-    if (error) {
-        console.error(error);
-        throw new Error(error.message);
-    }
+    if (error) throw new Error(error.message);
     return data;
 };
 
@@ -27,15 +24,13 @@ table: events
     created_at: string
     name: string
     date: string
-    venue: number
+    venue: number // foreign key to venues.id
 
 table: comments
     id: number
     created_at: string
     content: string
-    event_id: number
-    is_pinned: boolean
-    is_highlighted: boolean
+    event_id: number // foreign key to events.id
 
 table: venues
     id: number
@@ -64,9 +59,6 @@ export const useAddEvent = () => {
         onSuccess: () => {
             queryClient.invalidateQueries('events');
         },
-        onError: (error) => {
-            console.error(error);
-        },
     });
 };
 
@@ -77,9 +69,6 @@ export const useUpdateEvent = () => {
         onSuccess: () => {
             queryClient.invalidateQueries('events');
         },
-        onError: (error) => {
-            console.error(error);
-        },
     });
 };
 
@@ -89,9 +78,6 @@ export const useDeleteEvent = () => {
         mutationFn: (id) => fromSupabase(supabase.from('events').delete().eq('id', id)),
         onSuccess: () => {
             queryClient.invalidateQueries('events');
-        },
-        onError: (error) => {
-            console.error(error);
         },
     });
 };
@@ -114,9 +100,6 @@ export const useAddComment = () => {
         onSuccess: () => {
             queryClient.invalidateQueries('comments');
         },
-        onError: (error) => {
-            console.error(error);
-        },
     });
 };
 
@@ -127,9 +110,6 @@ export const useUpdateComment = () => {
         onSuccess: () => {
             queryClient.invalidateQueries('comments');
         },
-        onError: (error) => {
-            console.error(error);
-        },
     });
 };
 
@@ -139,9 +119,6 @@ export const useDeleteComment = () => {
         mutationFn: (id) => fromSupabase(supabase.from('comments').delete().eq('id', id)),
         onSuccess: () => {
             queryClient.invalidateQueries('comments');
-        },
-        onError: (error) => {
-            console.error(error);
         },
     });
 };
@@ -164,9 +141,6 @@ export const useAddVenue = () => {
         onSuccess: () => {
             queryClient.invalidateQueries('venues');
         },
-        onError: (error) => {
-            console.error(error);
-        },
     });
 };
 
@@ -177,9 +151,6 @@ export const useUpdateVenue = () => {
         onSuccess: () => {
             queryClient.invalidateQueries('venues');
         },
-        onError: (error) => {
-            console.error(error);
-        },
     });
 };
 
@@ -189,9 +160,6 @@ export const useDeleteVenue = () => {
         mutationFn: (id) => fromSupabase(supabase.from('venues').delete().eq('id', id)),
         onSuccess: () => {
             queryClient.invalidateQueries('venues');
-        },
-        onError: (error) => {
-            console.error(error);
         },
     });
 };
