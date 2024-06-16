@@ -13,10 +13,7 @@ export function SupabaseProvider({ children }) {
 
 const fromSupabase = async (query) => {
     const { data, error } = await query;
-    if (error) {
-        console.error(error);
-        throw new Error(error.message);
-    }
+    if (error) throw new Error(error.message);
     return data;
 };
 
@@ -41,7 +38,7 @@ table: venues
     name: string
     capacity: number
     type: string
-    pinned: boolean
+
 */
 
 // Hooks for events table
